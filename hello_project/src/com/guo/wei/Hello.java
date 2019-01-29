@@ -13,5 +13,6 @@ public class Hello {
         int i = 0;
         i += 10;
         System.out.println("11111");
+        System.out.println("33333");
     }
 }
