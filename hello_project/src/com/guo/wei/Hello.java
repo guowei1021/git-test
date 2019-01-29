@@ -12,5 +12,6 @@ public class Hello {
     public void sun() {
         int i = 0;
         i += 10;
+        System.out.println("11111");
     }
 }
