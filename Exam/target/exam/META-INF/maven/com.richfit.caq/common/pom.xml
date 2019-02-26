@@ -1,0 +1,266 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.richfit.caq</groupId>
+	<artifactId>common</artifactId>
+	<packaging>war</packaging>
+	<version>TRUNK-SNAPSHOT</version>
+	<name>caq common</name>
+	<properties>
+		<java-version>1.8</java-version>
+		<org.springframework-version>5.0.1.RELEASE</org.springframework-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+			<!-- log4j日志文件管理包版本 -->
+		<slf4j.version>1.7.7</slf4j.version>
+		<log4j.version>1.2.17</log4j.version>
+	</properties>
+	<dependencies>
+		<!-- spring 框架 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+		<!-- spring-webmvc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+		<!-- <dependency>
+			<groupId>org.springframework</groupId>
+		    <artifactId>spring-dao</artifactId>
+		    <version>2.0.8</version>
+		</dependency>
+		 -->
+		
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-tx</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+
+		<!-- mybatis-spring -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
+		<!-- jackson-core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+		<!-- jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<!-- pagehelper分页 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>4.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>0.9.6</version>
+        </dependency>
+        
+        
+        <!-- 数据源注解切换需要 -->
+        <dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.8.9</version> <!--可以查查最新版-->
+		</dependency>
+
+        <!-- 国伟增加上传下载 -->
+        
+        <dependency>  
+        	<groupId>commons-fileupload</groupId>  
+        	<artifactId>commons-fileupload</artifactId>  
+        	<version>1.3.1</version>  
+    	</dependency>
+    	<dependency>  
+      		<groupId>commons-lang</groupId>  
+      		<artifactId>commons-lang</artifactId>  
+      		<version>2.6</version>    
+   	 	</dependency>
+   	 	<dependency>
+       	 	<groupId>commons-codec</groupId>
+    		<artifactId>commons-codec</artifactId>
+   	 		<version>1.4</version>
+   	 	</dependency>
+
+		<!-- json-lib -->
+		<dependency>
+			<groupId>net.sf.ezmorph</groupId>
+			<artifactId>ezmorph</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+
+
+		<!-- 鹏飞增加activiti引擎 -->
+       <!--  <dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-engine</artifactId>
+			<version>5.21.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-spring</artifactId>
+			<version>5.21.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-aspects</artifactId>
+		    <version>5.0.1.RELEASE</version>
+		</dependency>
+		
+		 https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.8.11</version>
+		</dependency> -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.41</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		
+		<!-- 为导出EXCEL做准备 -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.17</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.17</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>5.0.1.RELEASE</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>caq-common</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>    
+                <groupId>org.apache.maven.plugins</groupId>    
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <attachClasses>true</attachClasses><!-- 项配置为true，控制打包时，是否打一个jar包到私服上 -->
+					<archiveClasses>false</archiveClasses><!-- archiveClasses项配置为false是否自动将classes下面的文件打成jar包来使用。此处采用fasle，即不自动打包，因为打包会将配置文件一同打包，这样项目启动时会有问题。 -->
+                	<webResources>
+				        <resource>
+				        	<!-- 元配置文件的目录，相对于pom.xml文件的路径。-->
+				        	<!--在打包的时候，将directory中的文件全部搬运到targetPath。 -->
+				        	<directory>target/classes</directory>
+				        	<!-- 目标路径-->
+				            <targetPath>WEB-INF/classes</targetPath>
+			        	</resource>
+			      	</webResources>
+                </configuration>
+            </plugin>
+            <plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>			   
+			        <failOnError>false</failOnError>
+			        <!--当配置true时,只清理filesets里的文件,构建目录中得文件不被清理.默认是flase.-->
+			        <excludeDefaultDirectories>false</excludeDefaultDirectories>
+			        <filesets>
+			            <fileset>
+			                <!--要清理的目录位置-->
+			                <directory>${basedir}/src/main/webapp/WEB-INF/classes</directory>
+			                <!--是否跟随符号链接 (symbolic links)-->
+			                <followSymlinks>false</followSymlinks>
+			                <!--默认有些文件是不会被清理的,比如.svn文件,如果设置成false,则全部按照自定义的来处理-->
+			                <useDefaultExcludes>false</useDefaultExcludes>
+			                <!--对这些文件进行清理-->
+			                <includes>
+			                    <include>**/*</include>
+			                </includes>
+			            </fileset>
+			        </filesets>
+			    </configuration>
+				<executions>
+					<execution>
+						<id>auto-clean</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins> 
+	</build>
+</project>

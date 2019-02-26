@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 试卷详情表 -->
+<mapper namespace="paperDetail">
+
+	<!-- 查：某考试实例下某章节下面对应的题目 -->
+	<select id="selectChapterQuestion" resultType="java.util.HashMap">
+		SELECT ok.*,q.topic FROM (
+			SELECT *
+			FROM sp_ex.t_ex_paper_detail pd
+			WHERE pd.paper_case_id = #{id}
+			AND chapter_id = #{chapter_id}
+		) ok
+		LEFT JOIN sp_ex.t_ex_question q
+		ON ok.question_id = q.id
+		ORDER BY ok.orders 
+	</select>
+	
+	<!-- 增 -->
+	<insert id="post">
+		INSERT INTO sp_ex.t_ex_paper_detail (
+			id,
+			question_id,
+			chapter_id,
+			paper_case_id,
+			grade,
+			orders,
+			create_user_id,
+			create_date
+		)
+		VALUES (
+			#{id},
+			#{question_id},
+			#{chapter_id},
+			#{paper_case_id},
+			#{grade},
+			#{orders},
+			#{create_user_id},
+			NOW()
+		)
+	</insert>
+
+	<!-- 删 -->
+	<delete id="delete">
+		DELETE FROM
+			sp_ex.t_ex_paper_detail
+		WHERE
+			paper_case_id=#{id}
+	</delete>
+	
+	
+	<!-- **************************自动出卷sql************************** -->
+	<!-- 查该试卷模版是否有章节和相应的策略：只看id -->
+	<select id="selectChapterAndPolicy" resultType="java.util.HashMap">
+		SELECT c.id AS cid, cp.id AS cpid
+		FROM (
+			SELECT *
+			FROM sp_ex.t_ex_chapter
+			WHERE paper_id = #{paper_id}
+		) c
+			LEFT JOIN sp_ex.t_ex_chapter_policy cp
+		ON c.id = cp.chapter_id
+	</select>
+	
+	<!-- 查该试卷模版章节信息 -->
+	<select id="selectThisChapter" resultType="java.util.HashMap">
+			SELECT *
+			FROM sp_ex.t_ex_chapter
+			WHERE paper_id = #{paper_id}
+			ORDER BY sort
+	</select>
+	
+	<!-- 查该试卷模版某章节对应的策略信息 -->
+	<select id="selectThisPolicy" resultType="java.util.HashMap">
+			SELECT *
+			FROM sp_ex.t_ex_chapter_policy
+			WHERE chapter_id = #{chapter_id}
+	</select>
+	
+</mapper>
+

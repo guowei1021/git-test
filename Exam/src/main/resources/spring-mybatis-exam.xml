@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="  
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd  
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd  
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
+
+	<!-- 扫描【业务层】和【数据操作层】组件 -->
+	<context:component-scan base-package="com.richfit.caq">			
+ 	</context:component-scan>
+ 	
+ 	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
+	    <property name="locations">  
+	        <list>  
+	        	<value>classpath:uploadfilepath.properties</value> 
+	        </list>  
+	    </property>  
+	</bean>
+ 	
+ 	<!-- 引入配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:jdbc.properties" />
+		<property name="properties" ref="configProperties" />
+	</bean>
+	    <!-- 创建数据源（数据库连接池使用dbcp） -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="${jdbc.initialSize}"></property>
+		<!-- 连接池最大数量 -->
+		<property name="maxActive" value="${jdbc.maxActive}"></property>
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle" value="${jdbc.maxIdle}"></property>
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="${jdbc.minIdle}"></property>
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="${jdbc.maxWait}"></property>
+		<!-- 解决8小时空闲连接失效问题 -->
+		<property name="timeBetweenEvictionRunsMillis" value="290000"></property>
+		<property name="minEvictableIdleTimeMillis" value="290000"></property>
+		<property name="numTestsPerEvictionRun" value="10"></property>
+	</bean>
+
+ 	<!-- 创建sqlsession -->
+ 	<bean  id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+ 		<property name="dataSource" ref="dataSource"></property>
+ 		<property name="mapperLocations">  
+            <list>  
+                <value>classpath:mybatis/mapper/*/*.xml</value>
+                <value>classpath:mybatis/mapper/*.xml</value>  
+            </list>  
+        </property>
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
+ 	</bean>
+ 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+  		<constructor-arg index="0" ref="sessionFactory" />
+	</bean>
+ 	
+</beans>

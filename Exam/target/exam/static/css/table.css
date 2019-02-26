@@ -1,0 +1,40 @@
+.table{font-size:12px;text-algin:center;}
+ .bottom{position:relative;padding-bottom:30px;}
+.table .am-pagination{   width: 600px;
+    top: -20px;
+    left: 150px;
+    position: absolute;}
+.table .am-datatable-info{
+float:left;
+margin-right:15px;
+padding-top:0;
+position:absolute;
+	left:200px;top:-5px;
+}
+.table .dataTables_length {
+	position:absolute;
+	left:5px;top:0px;	
+}
+.table .dataTables_length  label{font-weight:normal !important;}
+.table .dataTables_length select{margin-top:-3px;}
+.aa{display:none;}
+.table.label{
+float:left;
+}
+.am{font-size:18px;}
+.table select{
+	vertical-align:none;
+}
+.table .table-add,.table-revise{color:#5ab66b}
+table.dataTable thead > tr > th{padding:0.4rem;}
+.table th{text-align:center;font-weight:normal !important;}
+.table .odd,.even{text-align:center;}
+table.dataTable thead > tr > th{text-algin:center;!important}
+.table .am-table > tbody > tr > td{padding:0.1rem;vertical-align:middle;} 
+.table .table_btn{margin-right:5px;float:left;}
+.table .am-text-sm{font-size:12px;}
+.pop-foot{padding:o;margin:0;}
+.pop-foot p{padding:o;margin:0;line-height:40px;text-align:center;font-size:14px;font-weight:bold;}
+.pop-content{display:none;}
+.am-table tbody tr td ul li .dtr-data{white-space : normal  !important;}
+

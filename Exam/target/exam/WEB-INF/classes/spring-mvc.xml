@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+                        http://www.springframework.org/schema/context 
+                        http://www.springframework.org/schema/context/spring-context.xsd 
+                        http://www.springframework.org/schema/mvc 
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+		<!-- 配置注解，将com.richfit.caq.ca.controller包下的所有类中的注解进行扫描 -->
+		<context:component-scan base-package="com.richfit.caq.controller,com.richfit.caq.*.controller" ></context:component-scan>
+		<context:property-placeholder location="classpath:uploadfilepath.properties" ignore-unresolvable="true" /> 
+		<!-- mvc驱动 -->
+		<mvc:annotation-driven />
+		<mvc:default-servlet-handler/>
+		<!-- 配置视图解析器 -->
+		<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="prefix" value="/"/>
+			<property name="suffix" value=".jsp"/>
+		</bean>
+		<!-- 上传文件解析器 -->
+		<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+      		<property name="maxUploadSize" value="1610612736"/>
+        	<property name="maxInMemorySize" value="4096"/>
+			<!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常-->
+			<property name="resolveLazily" value="true"/>
+		</bean>
+        <!--上传文件过大异常处理 start-->
+        <mvc:interceptors>
+            <mvc:interceptor>
+                <mvc:mapping path="/**"/>
+                <bean class="com.richfit.caq.comm.interceptor.FileUploadInterceptor">
+                    <property name="maxSize" value="1610612736"/>
+                </bean>
+            </mvc:interceptor>
+        </mvc:interceptors>
+        <!-- END-->
+   		<!-- 测试spring异常功能 -->
+		<bean id="exceptionResolver"  class="com.richfit.caq.comm.exception.CustomSimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="com.richfit.caq.comm.exception.BusinessException">detailError</prop>
+				<!-- 这里还可以继续扩展对不同异常类型的处理 -->
+			</props>
+		</property>
+		</bean>    
+
+</beans>

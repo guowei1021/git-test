@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="  
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd  
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd  
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
+    
+	<bean id="dataSourceAspect" class="com.richfit.caq.comm.db.DataSourceAspect" />
+    <aop:config>
+        <aop:pointcut id="dataSourcePointcut" expression="execution(* com.richfit.caq.*.service.impl..*.*(..))"/>
+        <aop:aspect ref="dataSourceAspect">
+            <aop:before method="intercept" pointcut-ref="dataSourcePointcut" />
+        </aop:aspect>
+    </aop:config>
+	
+ 	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 配置事务通知属性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">    
+        <tx:attributes>  
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="com.richfit.caq.comm.exception.BusinessException"/>  
+            <tx:method name="edit*" propagation="REQUIRED" rollback-for="com.richfit.caq.comm.exception.BusinessException"/>  
+            <tx:method name="remove*" propagation="REQUIRED" rollback-for="com.richfit.caq.comm.exception.BusinessException"/>  
+        </tx:attributes>  
+    </tx:advice>  
+  	
+  	<!-- 
+  	execution()	表达式的主体
+	第一个“*”符号	表示返回值的类型任意
+	com.loongshawn.method.ces	AOP所切的服务的包名，即，需要进行横切的业务类
+	包名后面的“..”	表示当前包及子包
+	第二个“*”	表示类名，*即所有类
+	.*(..)	表示任何方法名，括号表示参数，两个点表示任何参数类型  	
+  	 -->
+    <aop:config>  
+        <aop:pointcut id="serviceOperation"  
+            expression="execution(* com.richfit.caq.*.service..*.*(..))" />  
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />  
+    </aop:config>
+    
+    <!-- 监听Spring初始化完成，手动注册一些bean -->
+ 	<bean class="com.richfit.caq.comm.db.MyApplicationListener"/>
+</beans>

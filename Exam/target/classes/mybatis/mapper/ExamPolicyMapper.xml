@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 考试实例表 -->
+<mapper namespace="examPolicy">
+
+	<!-- 查当前考试实例是否已有试卷策略记录 -->
+	<select id="selectExamPolicy" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_exam_policy
+		WHERE
+			exam_case_id = #{exam_case_id}
+	</select>
+	
+	<!-- 增 -->
+	<insert id="post">
+		INSERT INTO sp_ex.t_ex_exam_policy (
+			id,
+			exam_case_id,
+			paper_id,
+			beforehand_number,
+			warn_num,
+			warn_supply_num,
+			check_time,
+			trigger_num,
+			create_user_id,
+			create_date
+		)
+		VALUES (
+			#{id},
+			#{exam_case_id},
+			#{paper_id},
+			#{beforehand_number},
+			#{warn_num},
+			#{warn_supply_num},
+			#{check_time},
+			#{trigger_num},
+			#{create_user_id},
+			NOW()
+		)
+	</insert>
+
+	<!-- 改 -->
+	<update id="put">
+		UPDATE sp_ex.t_ex_exam_policy 
+		SET 
+			paper_id = #{paper_id},
+			beforehand_number = #{beforehand_number},
+			warn_num = #{warn_num},
+			warn_supply_num = #{warn_supply_num},
+			check_time = #{check_time},
+			trigger_num = #{trigger_num}
+		WHERE
+			exam_case_id = #{exam_case_id}
+	</update>
+
+
+	<!-- 删 -->
+	<delete id="delete">
+		DELETE FROM
+			sp_ex.t_ex_exam_policy
+		WHERE
+			exam_case_id = #{exam_case_id}
+	</delete>
+
+</mapper>
+

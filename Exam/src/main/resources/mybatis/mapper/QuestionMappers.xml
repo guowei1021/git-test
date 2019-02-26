@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Question">
+
+	<!-- 根据试题id查询试题 -->
+	<select id="getById" resultType="HashMap">
+		SELECT
+			a.*,
+			group_concat(b.knowledge_id Separator ',') AS knowledges
+		FROM
+			sp_ex.t_ex_question a
+			LEFT JOIN sp_ex.t_ex_question_knowledge b on a.id=b.question_id
+		WHERE
+			a.id = #{id}
+	</select>
+	
+	<!-- 将所有关联的知识点id转换为name -->
+	<select id="convertKnowledge" resultType="HashMap">
+		SELECT
+			GROUP_CONCAT(a.k_name) AS knowledge_names
+		FROM
+			sp_ex.`t_ex_knowledge` a 
+		WHERE
+			FIND_IN_SET(a.id,#{knowledges})
+	</select>
+	
+	<!-- 根据试题id查询所关联的知识点-->
+	<select id="getKnowledgeById" resultType="HashMap">
+		SELECT
+			a.knowledge_id
+		FROM
+			`t_ex_question_knowledge` a 
+		WHERE
+			a.question_id = #{id}
+	</select>
+	
+	<!-- 根据试题id查询试题全部选项 -->
+	<select id="getOptionByQuestionId" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_question_option a
+		WHERE
+			a.question_id = #{id}
+		ORDER BY
+			sort ASC	
+	</select>
+	
+	<!-- 查询全部试题 -->
+	<select id="getList" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_question a
+		ORDER BY
+			update_date DESC
+	</select>
+	
+	<!-- 根据题库id,查询试题列表 -->
+	<select id="getListByQuestionBankId" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_question a
+		WHERE
+			a.question_bank_id = #{question_bank_id}
+			AND a.is_new = 1
+		ORDER BY
+			update_date DESC
+	</select>
+	
+	<!-- 根据题库id和题目类型,查询试题列表 -->
+	<select id="getListByQbAmdtp" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_question a
+		WHERE
+			a.question_bank_id = #{question_bank_id}
+			AND a.is_new = 1
+			AND a.type = #{type}
+		ORDER BY
+			update_date DESC
+	</select>
+	
+	<!-- 根据题库id和题目类型和题目等级,查询试题列表 -->
+	<select id="getListByQbAmdtpAmdll" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_question a
+		WHERE
+			a.question_bank_id = #{question_bank_id}
+			AND a.is_new = 1
+			AND a.type = #{type}
+			AND a.level = #{level}
+		ORDER BY
+			update_date DESC
+	</select>
+	
+	<!-- 查询全部知识点 -->
+	<select id="getKnowledgeList" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_knowledge a
+		ORDER BY
+			update_date DESC
+	</select>
+	
+	<!-- 新增试题 -->
+	<insert id="post">
+	INSERT INTO sp_ex.t_ex_question  (
+		`id`,
+		`question_bank_id`,
+		`question_code`,
+		`topic`,
+		`analysis`,
+		`imgs`,
+		`level`,
+		`type`,
+		`status`,
+		`is_new`,
+		`create_user_id`,
+		`create_date`,
+		`update_user_id`,
+		`update_date`
+		)
+		VALUES
+			(
+			#{id},
+			#{question_bank_id},
+			#{question_code},
+			#{topic},
+			#{analysis},
+			#{imgs},
+			#{level},
+			#{type},
+			'2',
+			'1',
+			#{createUserId},
+			NOW(),
+			#{createUserId},
+			NOW()
+			);
+	</insert>
+	
+	<!-- 删除试题 -->
+	<delete id="delete" >
+		DELETE FROM
+			sp_ex.t_ex_question
+		WHERE
+			id = #{id} 
+	</delete>
+	
+	<!-- 删除试题选项 -->
+	<!-- <delete id="deleteOption" >
+		DELETE FROM
+			sp_ex.t_ex_question_option
+		WHERE
+			question_id = #{id} 
+	</delete> -->
+	
+	<!-- 删除试题与知识点的关系-->
+	<!-- <delete id="deleteRelationship" >
+		DELETE FROM
+			sp_ex.t_ex_question_knowledge
+		WHERE
+			question_id = #{id} 
+	</delete> -->
+	
+	<!-- 取消试题的最新状态 -->
+	<update id="cancelQuestionIsNew">
+		UPDATE 
+				sp_ex.t_ex_question a 
+			SET 
+				a.is_new = '0'
+			WHERE
+				a.id = #{id}
+	</update>
+	
+	<!-- 新增试题与知识点的关系 -->
+	<insert id="addRelationship">
+		INSERT INTO sp_ex.t_ex_question_knowledge (
+			`id`, 
+			`question_id`,
+			`knowledge_id`
+			)
+		VALUES
+			( 
+				#{id}, 
+				#{question_id}, 
+				#{knowledge_id}
+			)
+	</insert>
+	<!-- 检查该试题是否被使用 -->
+	<select id="checkDelete" resultType="HashMap">
+		SELECT
+			a.number + b.number AS number
+		FROM
+			( SELECT count( * ) AS number FROM `t_ex_paper_detail` WHERE question_id = #{id} ) a,
+			( SELECT count( * ) AS number FROM `t_ex_answer_paper_detail` a WHERE a.question_id = #{id} ) b
+	</select>
+	
+	<!-- addCode -->
+	<update id="addCode">
+	UPDATE
+		sp_ex.t_ex_question a 
+			SET 
+				a.question_code = #{question_code}
+			WHERE
+				a.id = #{id}
+	</update>
+</mapper> 

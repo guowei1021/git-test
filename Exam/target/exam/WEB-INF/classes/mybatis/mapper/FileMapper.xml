@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="File">
+	
+	<select id="getList" resultType="java.util.HashMap">
+		SELECT * FROM sp_ms.t_sys_file
+		<if test="hashcode != null">
+			where hashcode = #{hashcode}
+		</if>
+	</select>
+	<!-- 保存文件信息 -->
+	<insert id="save">
+		INSERT INTO sp_ms.t_sys_file values(
+			#{file_id},
+			
+				#{file_name},
+			
+				#{path},
+			
+				#{file_type},
+			
+				#{hashcode},
+			
+				#{file_opemodle},
+			
+				#{creat_time}
+		)
+	</insert>
+	<!-- 根据id查询文件  -->
+	<select id="getOne" resultType="java.util.HashMap">
+		SELECT * FROM sp_ms.t_sys_file where file_id = #{id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Chapter">
+	<!-- 根据id查询章节 -->
+	<select id="getById" resultType="HashMap">
+		SELECT
+			*,
+			( SELECT count( * ) FROM sp_ex.t_ex_chapter_policy WHERE chapter_id = #{id} ) AS number 
+		FROM
+			sp_ex.t_ex_chapter a
+		WHERE
+			a.id = #{id}
+	</select>
+	
+	<!-- 查询所有章节列表 -->
+	<select id="getList" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_chapter a
+		ORDER BY
+			sort ASC
+	</select>
+	
+	<!-- 通过试卷模板id查询章节列表 -->
+	<select id="getListByPaperId" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_chapter a
+		WHERE
+			a.paper_id = #{paper_id}
+		ORDER BY
+			sort ASC
+			
+	</select>
+	
+	<!-- 新增章节 -->
+	<insert id="post">
+	INSERT INTO sp_ex.t_ex_chapter (
+		  `id`,
+		  `paper_id`, 
+		  `type`, 
+		  `sort`, 
+		  `chapter_name`, 
+		  `chapter_grade`, 
+		  `create_user_id`, 
+		  `create_date`, 
+		  `update_user_id`, 
+		  `update_date`
+		  )
+	VALUES(
+		  #{id},
+		  #{paper_id},
+		  #{type}, 
+		  #{sort},
+		  #{chapter_name},
+		  #{chapter_grade},
+		  #{create_user_id},
+		  NOW( ),
+		  #{create_user_id},
+		  NOW( )
+		  )
+	</insert>
+	
+	<!-- 修改章节 -->
+	<update id="put">
+		UPDATE sp_ex.t_ex_chapter a
+		SET
+		  `type` = #{type},
+		  `chapter_name` = #{chapter_name}, 
+		  `chapter_grade` = #{chapter_grade}, 
+		  `update_user_id` = #{update_user_id}, 
+		  `update_date` = NOW()
+		WHERE
+			a.id = #{id}
+	</update>
+	
+	<!-- 删除章节 -->
+	<delete id="delete" >
+		DELETE FROM
+			sp_ex.t_ex_chapter
+		WHERE
+			id = #{id}
+	</delete>
+	
+	<!-- 删除章节下的所有策略 -->
+	<delete id="deletePolicy">
+		DELETE FROM
+			sp_ex.t_ex_chapter_policy
+		WHERE
+			chapter_id = #{id}
+	</delete>
+	
+	<!-- 删除章节时，修改章节表排序字段 -->
+	<update id="changeSort">
+		UPDATE sp_ex.t_ex_chapter a
+		SET
+		  sort = sort-1
+		WHERE
+			a.sort > #{sort}
+			AND paper_id = #{paper_id}
+	</update>
+	
+	<!-- 手动排序时，修改章节表排序字段 -->
+	<update id="sort">
+		UPDATE sp_ex.t_ex_chapter a
+		LEFT JOIN (
+		SELECT
+			a.sort AS oldsort,
+			@i := @i + 1 AS newsort 
+		FROM
+			sp_ex.t_ex_chapter a,
+			( SELECT @i := #{min} ) b 
+		WHERE
+			a.paper_id = #{paper_id}
+			AND a.sort IN ( ${newSort} ) 
+		ORDER BY
+			FIELD( a.sort, ${newSort} ) 
+			) c ON a.sort = c.oldsort 
+			SET a.sort = c.newsort 
+		WHERE
+			a.paper_id = #{paper_id} 
+			AND c.newsort IS NOT NULL
+	</update>
+	
+	<!-- 查询当前试卷模板的最大排序位置 -->
+	<select id="getMaxSort" resultType="HashMap">
+		SELECT
+			max( sort ) + 1 AS maxSort
+		FROM
+			sp_ex.t_ex_chapter 
+		WHERE
+			paper_id = #{id}
+	</select>
+</mapper> 

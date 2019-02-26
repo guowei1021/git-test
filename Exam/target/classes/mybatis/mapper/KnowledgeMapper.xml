@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 知识点表，知识点自关联表 -->
+<mapper namespace="knowledge">
+
+	<!-- 查单条 -->
+	<select id="select" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_knowledge
+		WHERE
+			id = #{id}
+	</select>
+
+	<!-- 根据科目查相关知识点列表 -->
+	<select id="selectAll" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_knowledge
+		WHERE
+			subject_id = #{subject_id}
+		ORDER BY create_date ASC
+	</select>
+	<!-- 根据科目查相关知识点列表:for tree -->
+	<select id="selectAllForTree" resultType="java.util.HashMap">
+		SELECT
+			k.*, (CASE WHEN s.k_parent_id IS NULL THEN 'K' ELSE s.k_parent_id END) AS k_parent_id
+		FROM (
+			SELECT
+				*
+			FROM
+				sp_ex.t_ex_knowledge
+			WHERE
+				subject_id = #{subject_id}
+			ORDER BY create_date DESC
+		) k
+		LEFT JOIN sp_ex.t_ex_knowledge_self s
+		ON k.id=s.k_kid_id
+	</select>
+
+	<!-- 根据知识点名称模糊查询某科目下的知识点列表 -->
+	<select id="selectByNameVague" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_knowledge
+		WHERE
+			subject_id = #{subject_id}
+		AND
+			k_name like CONCAT('%',#{k_name},'%')
+		ORDER BY create_date ASC
+	</select>
+	
+	<!-- 查是否被章节策略引用 -->
+	<select id="selectByUserd" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_chapter_policy cp
+		WHERE
+			cp.knowledge_id = #{id}
+	</select>
+	
+	<!-- 增 -->
+	<insert id="post">
+		INSERT INTO sp_ex.t_ex_knowledge (
+			id,
+			subject_id,
+			k_name,
+			k_desc,
+			create_user_id,
+			create_date
+		)
+		VALUES (
+			#{id},
+			#{subject_id},
+			#{k_name},
+			#{k_desc},
+			#{create_user_id},
+			NOW()
+		)
+	</insert>
+
+	<!-- 改 -->
+	<update id="put">
+		UPDATE sp_ex.t_ex_knowledge 
+		SET 
+			k_name = #{k_name},
+			k_desc = #{k_desc},
+			update_user_id = #{update_user_id},
+			update_date = NOW()
+		WHERE
+			id = #{id}
+	</update>
+
+	<!-- 删 -->
+	<delete id="delete">
+		DELETE FROM
+			sp_ex.t_ex_knowledge
+		WHERE
+			id = #{id}
+	</delete>
+	
+	
+	<!-- 以下是知识点自关联表操作*********************************** -->
+	
+	<!-- 查某知识点父级，和名称 -->
+	<select id="selectKParent" resultType="java.util.HashMap">
+	SELECT
+		s.k_parent_id,k.k_name
+	FROM (	
+		SELECT
+			k_kid_id,k_parent_id
+		FROM
+			sp_ex.t_ex_knowledge_self
+		WHERE k_kid_id = #{k_kid_id}
+	) s
+	LEFT JOIN sp_ex.t_ex_knowledge k
+	ON s.k_parent_id=k.id
+	</select>
+	
+	<!-- 增 -->
+	<insert id="Zpost">
+		INSERT INTO sp_ex.t_ex_knowledge_self (
+			id,
+			k_parent_id,
+			k_kid_id
+		)
+		VALUES (
+			#{id},
+			#{k_parent_id},
+			#{k_kid_id}
+		)
+	</insert>
+	
+	<!-- 删某个知识点的所有父级 -->
+	<delete id="ZdeleteByKidId">
+		DELETE FROM
+			sp_ex.t_ex_knowledge_self
+		WHERE
+			k_kid_id = #{id}
+	</delete>
+	
+	<!-- 删某个知识点的所有子级 -->
+	<delete id="ZdeleteByParentId">
+		DELETE FROM
+			sp_ex.t_ex_knowledge_self
+		WHERE
+			k_parent_id = #{id}
+	</delete>
+
+	
+
+</mapper>
+

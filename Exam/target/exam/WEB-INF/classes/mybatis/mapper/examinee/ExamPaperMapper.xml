@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.richfit.caq.exam.service.impl.examinee.examPaper">
+    <!-- 考卷 -->
+    <select id="getByExamId" resultType="HashMap">
+        SELECT
+            ec.id     AS exam_case_id,
+            ec.`name` AS exam_case_name,
+            ec.is_connect,
+            ec.topic_is_disorder,
+            ec.option_is_disorder,
+            ec.is_beforehand,
+            ec.starttime,
+            ec.endtime,
+            ec.duration,
+            ec.locked_times,
+            pc.id     AS paper_case_id,
+            pc.`name` AS paper_case_name,
+            pc.count,
+            pc.count_used,
+            pc.content
+        FROM
+            sp_ex.t_ex_exam_case ec
+            LEFT JOIN sp_ex.t_ex_exam_case_paper_case ecpc ON ec.id = ecpc.exam_case_id
+            LEFT JOIN sp_ex.t_ex_paper_case pc ON pc.id = ecpc.paper_case_id
+        WHERE
+            ec.id = #{exam_case_id}
+            AND pc.content IS NOT NULL
+            AND (
+	              pc.count > pc.count_used
+	              OR pc.count IS NULL
+            )
+        ORDER BY RAND()
+        LIMIT 1
+    </select>
+
+    <update id="editCountUsed">
+        UPDATE sp_ex.t_ex_paper_case
+        SET count_used = (
+                             SELECT count_used
+                             FROM
+                                 sp_ex.t_ex_paper_case
+                             WHERE
+                                 id = #{paper_case_id}
+                         ) + 1
+        WHERE
+            id = #{paper_case_id}
+    </update>
+
+    <select id="getExamById" resultType="HashMap">
+        SELECT
+            ec.id     AS exam_case_id,
+            ec.`name` AS exam_case_name,
+            ec.is_connect,
+            ec.topic_is_disorder,
+            ec.option_is_disorder,
+            ec.is_beforehand,
+            ec.locked_times,
+            ec.endtime
+        FROM
+            sp_ex.t_ex_exam_case ec
+        WHERE
+            ec.id = #{id}
+    </select>
+    <insert id="save">
+        INSERT INTO sp_ex.t_ex_answer_paper (
+            id,
+            exam_case_id,
+            paper_case_id,
+            examinee_info_id,
+            content
+        )
+        VALUES
+            (
+                #{id},
+                #{exam_case_id},
+                #{paper_case_id},
+                #{examinee_info_id},
+                #{content}
+            )
+    </insert>
+
+    <select id="getAnswerPaper" resultType="HashMap">
+        SELECT
+            eap.exam_case_id,
+            ec.`name` AS exam_case_name,
+            ec.is_connect,
+            ec.topic_is_disorder,
+            ec.option_is_disorder,
+            ec.is_beforehand,
+            ec.starttime,
+            ec.endtime,
+            ec.duration,
+            ec.locked_times,
+            eap.id    AS answer_paper_id,
+            eap.content,
+            eap.paper_content,
+            eap.submit_flag
+        FROM
+            sp_ex.t_ex_answer_paper eap
+            LEFT JOIN sp_ex.t_ex_exam_case ec ON ec.id = eap.exam_case_id
+        WHERE
+            eap.exam_case_id = #{exam_case_id}
+            AND eap.examinee_info_id = #{examinee_info_id}
+    </select>
+    <!-- 保存选中的选项ID -->
+    <update id="updateAnswerPaper">
+        UPDATE sp_ex.t_ex_answer_paper
+        SET paper_content = #{paper_content},
+            submit_flag   = #{submit_flag}
+        WHERE
+            exam_case_id = #{exam_case_id}
+            AND examinee_info_id = #{examinee_info_id}
+    </update>
+    <!-- 保存成绩 -->
+    <update id="saveTotalScore">
+        UPDATE sp_ex.t_ex_answer_paper
+        SET total_score = #{total_score}
+        WHERE
+            id = #{id}
+    </update>
+    <!-- 查询每道题的答案 -->
+    <select id="getQuestionAnswer" resultType="HashMap">
+        SELECT
+            epd.question_id,
+            GROUP_CONCAT(eqo.id) AS option_id,
+            epd.grade
+        FROM
+            sp_ex.t_ex_paper_detail epd
+            LEFT JOIN sp_ex.t_ex_question_option eqo ON epd.question_id = eqo.question_id
+        WHERE
+            epd.paper_case_id = #{paper_case_id}
+            AND eqo.is_true = 1
+        GROUP BY
+            epd.question_id
+    </select>
+    <!-- 保存答卷详情 -->
+    <insert id="saveAnswerPaperDetail">
+        INSERT INTO sp_ex.t_ex_answer_paper_detail (
+            id,
+            score,
+            answer_paper_id,
+            question_id,
+            question_option_id
+        )
+        VALUES
+            (
+                #{id},
+                #{score},
+                #{answer_paper_id},
+                #{question_id},
+                #{question_option_id}
+            )
+    </insert>
+
+    <!-- 查询考试实例和考试策略 -->
+    <select id="getExamPolicyId" resultType="HashMap">
+        SELECT
+            ec.is_beforehand,
+            ep.paper_id
+        FROM
+            sp_ex.t_ex_exam_case ec
+            LEFT JOIN sp_ex.t_ex_exam_policy ep ON ec.id = ep.exam_case_id
+        WHERE
+            ec.id = #{id}
+    </select>
+
+    <!--根据ID查询考试实例-->
+    <select id="getExamCaseByID" resultType="HashMap">
+        SELECT *
+        FROM
+            sp_ex.t_ex_exam_case
+        WHERE id = #{id}
+    </select>
+
+    <!--查询当前登录人是否报名了该考试-->
+    <select id="getLonginExam" resultType="HashMap">
+        SELECT *
+        FROM
+            sp_ex.t_ex_exam_examinee
+        WHERE
+            examinee_info_id = #{examinee_info_id}
+            AND exam_case_id = #{exam_case_id}
+    </select>
+
+    <!--根据考试实例查询考试开时间-->
+    <select id="getStartTime" resultType="java.util.HashMap">
+        SELECT
+            *
+        FROM
+            sp_ex.t_ex_exam_case
+        WHERE
+            id = #{exam_case_id}
+    </select>
+
+</mapper>

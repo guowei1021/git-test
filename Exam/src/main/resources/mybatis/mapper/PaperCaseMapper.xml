@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 试卷实例表 -->
+<mapper namespace="paperCase">
+
+	<!-- 查单条 -->
+	<select id="select" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_paper_case
+		WHERE
+			id = #{id}
+	</select>
+
+	<!-- 查：某考试实例对应的试卷实例 -->
+	<select id="selectAll" resultType="java.util.HashMap">
+		SELECT p.*
+		FROM (
+			SELECT *
+			FROM sp_ex.t_ex_exam_case_paper_case
+			WHERE exam_case_id = #{exam_case_id}
+		) ep
+		LEFT JOIN t_ex_paper_case p
+		ON ep.paper_case_id = p.id
+		ORDER BY create_date ASC
+	</select>
+	
+	<!-- 查：某试卷实例是否被考试实例引用 -->
+	<select id="selectIsOut" resultType="java.util.HashMap">
+		SELECT *
+		FROM sp_ex.t_ex_exam_case_paper_case
+		WHERE paper_case_id = #{paper_case_id}
+	</select>
+	
+	<!-- 查：某静态试卷对应的试卷实例 -->
+	<select id="selectAllByPaper" resultType="java.util.HashMap">
+		SELECT *
+		FROM sp_ex.t_ex_paper_case pc
+		WHERE pc.paper_id = #{paper_id}
+		ORDER BY create_date ASC
+	</select>
+	
+	<!-- 查：根据考试实例id找到静态考试再找到静态试卷（多个） -->
+	<select id="selectPapers" resultType="java.util.HashMap">
+		SELECT p.id,p.name FROM (
+			SELECT * FROM
+				sp_ex.t_ex_exam_paper ep
+			WHERE ep.exam_id = (
+				SELECT ec.exam_id
+				FROM sp_ex.t_ex_exam_case ec
+				WHERE ec.id = #{id}
+			)
+		) a
+		LEFT JOIN sp_ex.t_ex_paper p
+		ON a.paper_id = p.id
+	</select>
+	
+	<!-- 查：根据考试实例id找到所有自动卷 -->
+	<select id="selectAutoPapers" resultType="java.util.HashMap">
+		SELECT p.*
+		FROM 
+		(
+			SELECT *
+			FROM sp_ex.t_ex_exam_case_paper_case
+			WHERE exam_case_id = #{exam_case_id}
+		) ep
+		,t_ex_paper_case p
+		WHERE ep.paper_case_id = p.id AND p.type = 0
+	</select>
+	
+	<!-- 增：试卷实例 -->
+	<insert id="post">
+		INSERT INTO sp_ex.t_ex_paper_case (
+			id,
+			paper_id,
+			name,
+			count,
+			count_used,
+			type,
+			create_user_id,
+			create_date
+		)
+		VALUES (
+			#{id},
+			#{paper_id},
+			#{name},
+			#{count},
+			0,
+			#{type},
+			#{create_user_id},
+			NOW()
+		)
+	</insert>
+	
+	<!-- 查：要添加的中间表记录是否已存在 -->
+	<select id="selectIsTo" resultType="java.util.HashMap">
+		SELECT *
+		FROM sp_ex.t_ex_exam_case_paper_case ecpc
+		WHERE  ecpc.exam_case_id=#{exam_case_id} AND ecpc.paper_case_id=#{paper_case_id}
+	</select>
+	
+	<!-- 增：与考试实例的关系 -->
+	<insert id="postTo">
+		INSERT INTO sp_ex.t_ex_exam_case_paper_case (
+			id,
+			exam_case_id,
+			paper_case_id
+		)
+		VALUES (
+			#{id},
+			#{exam_case_id},
+			#{paper_case_id}
+		)
+	</insert>
+
+	<!-- 改 -->
+	<update id="put">
+		UPDATE sp_ex.t_ex_paper_case 
+		SET 
+			name = #{name},
+			count = #{count},
+			type = #{type}
+		WHERE
+			id = #{id}
+	</update>
+
+	<!-- 试卷内容JSON -->
+	<update id="putJson">
+		UPDATE sp_ex.t_ex_paper_case 
+		SET 
+			content = #{content}
+		WHERE
+			id = #{id}
+	</update>
+
+	<!-- 删 -->
+	<delete id="delete">
+		DELETE FROM
+			sp_ex.t_ex_paper_case
+		WHERE
+			id = #{id}
+	</delete>
+
+	<!-- 删：删除试卷实例与考试实例的关系 -->
+	<delete id="deleteTo">
+		DELETE FROM
+			sp_ex.t_ex_exam_case_paper_case
+		WHERE
+			exam_case_id=#{exam_case_id}
+		AND paper_case_id=#{paper_case_id}
+	</delete>
+	
+	
+	<!-- JSON*JSON*JSON*JSON*JSON*JSON*JSON*JSON*JSON*JSON-从数据库取的 -->
+	<!-- 根据考试实例id查章节信息 -->
+	<select id="selectJChapter" resultType="java.util.HashMap">
+		SELECT c.id,c.chapter_name,c.chapter_grade,c.`type`
+		FROM sp_ex.t_ex_chapter c
+		WHERE c.paper_id =
+		(
+			SELECT paper_id
+			FROM sp_ex.t_ex_paper_case
+			WHERE id = #{paper_case_id}
+		)
+		ORDER BY c.sort
+	</select>
+	
+	<!-- 根据考试实例id和章节id查题目信息 -->
+	<select id="selectJQuestion" resultType="java.util.HashMap">
+		SELECT q.id,q.topic,q.`type`,k.grade
+		FROM (
+			SELECT pd.question_id,pd.grade,pd.orders
+			FROM sp_ex.t_ex_paper_detail pd
+			WHERE pd.paper_case_id = #{paper_case_id}
+			AND pd.chapter_id = #{chapter_id}
+		) k
+		LEFT JOIN sp_ex.t_ex_question q
+		ON k.question_id = q.id
+		ORDER BY k.orders
+	</select>
+	
+	<!-- 根据题目id查选项信息 -->
+	<select id="selectJOption" resultType="java.util.HashMap">
+		SELECT qo.id,qo.option_content
+		FROM sp_ex.t_ex_question_option qo
+		WHERE qo.question_id = #{question_id}
+		ORDER BY qo.sort
+	</select>
+	
+	
+	<!-- JSON*JSON*JSON*JSON*JSON*JSON*JSON*JSON*JSON*JSON-自己组装的 -->
+	<!-- 查该试卷模版章节信息 -->
+	<select id="selectChapterSomeInfo" resultType="java.util.HashMap">
+		SELECT c.id,c.chapter_name,c.chapter_grade,c.`type`
+		FROM sp_ex.t_ex_chapter c
+		WHERE c.paper_id = #{paper_id}
+		ORDER BY c.sort
+	</select>
+	
+	<!-- 根据题目id查题目部分信息（题干和试题类型） -->
+	<select id="selectQuestionSomeInfo" resultType="java.util.HashMap">
+		SELECT q.id,q.topic,q.`type`
+		FROM sp_ex.t_ex_question q
+		WHERE q.id = #{question_id}
+	</select>
+	
+</mapper>
+

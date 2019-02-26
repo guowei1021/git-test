@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Option">
+	<!-- 根据id查询选项 -->
+	<select id="getById" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_question_option a
+		WHERE
+			a.id = #{id}
+	</select>
+	
+	<!-- 查询所有选项列表 -->
+	<select id="getList" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_question_option a
+		ORDER BY
+			sort ASC
+	</select>
+	
+	<!-- 通过试题id查询选项列表 -->
+	<select id="getListByQuestionId" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_question_option a
+		WHERE
+			a.question_id = #{question_id}
+		ORDER BY
+			sort ASC
+			
+	</select>
+	
+	<!-- 通过试题id查询正确选项数量 -->
+	<select id="getTrueNumberByQuestionId" resultType="HashMap">
+		SELECT
+			type,
+			( SELECT count( * ) FROM sp_ex.t_ex_question_option WHERE question_id = #{question_id} AND is_true = '1' ) AS trueNumber,
+			( SELECT count( * ) FROM sp_ex.t_ex_question_option WHERE question_id = #{question_id}) AS number
+		FROM
+			sp_ex.t_ex_question a
+		WHERE
+			a.id = #{question_id}
+		ORDER BY
+			create_date DESC
+	</select>
+	
+	<!-- 新增选项 -->
+	<insert id="post">
+	INSERT INTO sp_ex.t_ex_question_option (
+		  `id`, 
+		  `question_id`, 
+		  `option_content`, 
+		  `is_true`, 
+		  `sort`, 
+		  `create_user_id`, 
+		  `create_date`, 
+		  `update_user_id`, 
+		  `update_date`
+		  )
+	VALUES(
+		  #{id},
+		  #{question_id},
+		  #{option_content}, 
+		  #{is_true},
+		  #{sort},
+		  #{create_user_id},
+		  NOW( ),
+		  #{create_user_id},
+		  NOW( )
+		  )
+	</insert>
+	
+	<!-- 修改选项 -->
+	<update id="put">
+		UPDATE sp_ex.t_ex_question_option a
+		SET
+		  `option_content` = #{option_content},
+		  `is_true` = #{is_true}, 
+		  `update_user_id` = #{update_user_id}, 
+		  `update_date` = NOW()
+		WHERE
+			a.id = #{id}
+	</update>
+	
+	<!-- 删除选项 -->
+	<delete id="delete" >
+		DELETE FROM
+			sp_ex.t_ex_question_option
+		WHERE
+			id = #{id}
+	</delete>
+	
+	<!-- 删除选项时，修改选项表排序字段 -->
+	<update id="changeSort">
+		UPDATE sp_ex.t_ex_question_option a
+		SET
+		  sort = sort-1
+		WHERE
+			a.sort > #{sort}
+			AND question_id = #{question_id}
+	</update>
+	
+	<!-- 手动排序时，修改章节表排序字段 -->
+	<update id="sort">
+		UPDATE sp_ex.t_ex_question_option a
+		LEFT JOIN (
+		SELECT
+			a.sort AS oldsort,
+			@i := @i + 1 AS newsort 
+		FROM
+			sp_ex.t_ex_question_option a,
+			( SELECT @i := #{min} ) b 
+		WHERE
+			a.question_id = #{question_id}
+			AND a.sort IN ( ${newSort} ) 
+		ORDER BY
+			FIELD( a.sort, ${newSort} ) 
+			) c ON a.sort = c.oldsort 
+			SET sort = newsort ,
+				update_date = NOW()
+		WHERE
+			a.question_id = #{question_id} 
+			AND c.newsort IS NOT NULL
+	</update>
+	
+	<!-- 修改题目状态 -->
+	<update id="changeQuestionStatus">
+		UPDATE sp_ex.t_ex_question 
+		SET
+		  `status` = #{status}
+		WHERE
+			id = #{id}
+	</update>
+	
+	<!-- 查询当前试题选项的最大排序位置 -->
+	<select id="getMaxSort" resultType="HashMap">
+		SELECT
+			max( sort ) + 1 AS maxSort
+		FROM
+			sp_ex.t_ex_question_option 
+		WHERE
+			question_id = #{id}
+	</select>
+
+</mapper> 

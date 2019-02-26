@@ -1,0 +1,31 @@
+li{list-style:none;}
+body{background:#f2f2f2;}
+div,ul,li,p,span{margin:0;padding:0;}
+div,ul,li,p,input,span,i,h1,h2,h3,h4,h5,h6,select,option{margin:0;padding:0;font-family:"Microsoft YaHei";color:#333;}
+/* 琛ㄥご */
+.content ul:nth-child(2){display: none;}
+/* 鏈彁浜ゅ凡鎻愪氦 */
+.nav{width:100%;padding:15px;position:fixed;top:0;left:0;background:#f2f2f2;z-index:999;}
+.nav li{background: #fff;text-align: center;
+line-height:30px;border:1px solid #2d7bbd;font-size:14px;width:50%;float:left;color:#2d7bbd;}
+.nav li:nth-child(1){border-radius:7px 0 0 7px;}
+.nav li:nth-child(2){border-radius:0 7px 7px 0;}
+/* 琚�変腑鐨勬牱寮� */
+.nav .nav-bg{background:#2d7bbd;color: #fff;transition:.2s;}
+/* 鍒楄〃鍐呭 */
+.content{background:#fff;margin-top:62px;}
+.content ul li{padding:0 15px;border-bottom:1px solid #ccc;}
+.content ul li p{line-height:25px;font-size:12px;}
+.status{float:right;font-weight:bold;font-size:12px;}
+.statuss{float:right;font-weight:bold;font-size:12px;border-radius:2px;
+height:22px;padding:0 5px;}
+.time-img{width:13px;height:13px;margin:0 5px;margin-top:-2px;}
+
+.add{width:30px;height:30px;
+position:fixed;bottom:50px;right:20px;font-size:25px;text-align:center;
+line-height:30px;color:#fff;background:#2d7bbd;border-radius:50%;}
+
+
+
+
+

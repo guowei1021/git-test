@@ -1,0 +1,101 @@
+.wrap_input{width:100%;height:44px;font-size:14px;}
+.wrap_input label{width:30%;line-height:44px;float:left;text-align:right;font-size:14px;}
+.wrap_input input{text-indent:5px;border:1px solid #ccc;margin-left:2%;width:55%;height:32px;font-size:14px;margin-top:6px;border-radius:3px;}
+.error{display:none;}
+/* label{font-weight:bold;} */
+input::-webkit-input-placeholder{ /*WebKit browsers*/
+
+color: #999;
+
+}
+label,label{font-weight:normal !important;margin-bottom:0 !important;}
+input::-moz-input-placeholder{ /*Mozilla Firefox*/
+
+color: #999;
+
+}
+
+input::-ms-input-placeholder{ /*Internet Explorer*/ 
+
+color: #999;
+
+}
+a{cursor:pointer;}
+
+.ui-icon-triangle-1-s{margin-top:2px;}
+.ui-icon-circle-close{margin-top:2px;}
+.ui-icon-check,.ui-icon-closethick{margin-top:0px;}
+
+
+.wrap_radio{width:100%;height:44px;font-size:14px;}
+.wrap_radio label{width:30%;line-height:44px;float:left;text-align:right;font-size:14px;}
+
+.wrap_radio .am-selected{margin-left:2%;width:55% !important;font-size:14px;}
+.wrap_radio .am-selected button{font-size:14px;padding:5px 1em;}
+.wrap_radio ul li{font-size:14px;}
+
+
+
+.basicForm #name .wrap_input label{width:30%;}
+.basicForm #name .wrap_input input{margin-left:2%;width:55%;}
+#person #name .wrap_input label{width:30%;}
+#person #name .wrap_input input{margin-left:2%;width:55%;}
+#per #name .wrap_input label{width:30%;}
+#per #name .wrap_input input{margin-left:2%;width:55%;}
+.iframe_person #name .wrap_input label{width:30%;}
+.iframe_person #name .wrap_input input{margin-left:2%;width:55%;}
+
+#org_info_id .wrap_radio label,
+#skill_area .wrap_radio label,
+#name .wrap_input label,
+#org_english_name .wrap_input label,
+#english_name .wrap_input label,
+#sourceurl .wrap_input label,
+#main_products .wrap_input label,
+#contact_address .wrap_input label,
+#org_info_name .wrap_input label,
+#pro_brief_info .text_div label,
+#technology_route .text_div label,
+#implement_process .text_div label,
+#technology_level_progress .text_div label,
+#question_scheme .text_div label,
+#plan .text_div label,
+#team_person_work_arrangement .text_div label,
+#bank_address .wrap_input label,
+#area .wrap_input label,
+#calculation_basis label,
+
+#application_value label,
+#pro_achievement label,
+#quality_award label,
+#quality_paper label,
+#standard_formulate label,
+#quality_praise label,
+#speciality .text_div label{width:15%;}
+#org_english_name .wrap_input input,
+#name .wrap_input input,
+#bank_address .wrap_input input,
+#english_name .wrap_input input,
+#sourceurl .wrap_input input,
+#main_products .wrap_input input,
+#contact_address .wrap_input input,
+#org_info_name .wrap_input input,
+#pro_brief_info .text_div textarea,
+#technology_route .text_div textarea,
+#implement_process .text_div textarea,
+#technology_level_progress .text_div textarea,
+#question_scheme .text_div textarea,
+#plan .text_div textarea,
+#team_person_work_arrangement .text_div textarea,
+#area .wrap_input input,
+#calculation_basis .text_div textarea,
+#application_value .text_div textarea,
+#pro_achievement .text_div textarea,
+#quality_award .text_div textarea,
+#quality_paper .text_div textarea,
+#standard_formulate .text_div textarea,
+#quality_praise .text_div textarea,
+#speciality .text_div textarea{margin-left:1%;width:77.5%;}
+
+
+

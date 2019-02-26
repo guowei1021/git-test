@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 科目与考试关系表 -->
+<mapper namespace="exam_subject">
+
+	<!-- 单条 -->
+	<select id="select" resultType="java.util.HashMap">
+	</select>
+
+	<!-- 列表 -->
+	<select id="selectAll" resultType="java.util.HashMap">
+	</select>
+
+	<!-- 查指定科目是否已经关联了即将添加的考试 -->
+	<select id="selectHasThisExam" resultType="java.util.HashMap">
+		SELECT id
+		FROM sp_ex.t_ex_exam_subject
+		WHERE subject_id= #{subject_id} AND exam_id = #{exam_id}
+	</select>
+	
+	<!-- 增 -->
+	<insert id="post">
+		INSERT INTO sp_ex.t_ex_exam_subject (
+			id,
+			subject_id,
+			exam_id
+		)
+		VALUES (
+			#{id},
+			#{subject_id},
+			#{exam_id}
+		)
+	</insert>
+
+	<!-- 改 -->
+	<update id="put">
+	</update>
+
+	<!-- 删 -->
+	<delete id="delete">
+		DELETE FROM
+			sp_ex.t_ex_exam_subject
+		WHERE
+			subject_id= #{subject_id} AND exam_id = #{exam_id}
+	</delete>
+	
+	<!-- 删某考试对应的所有科目关系 -->
+	<delete id="deleteAllExam">
+		DELETE FROM
+			sp_ex.t_ex_exam_subject
+		WHERE
+			exam_id = #{id}
+	</delete>
+	
+	<!-- 删某科目对应的所有考试关系 -->
+	<delete id="deleteAllSubject">
+		DELETE FROM
+			sp_ex.t_ex_exam_subject
+		WHERE
+			subject_id = #{id}
+	</delete>
+
+</mapper>
+

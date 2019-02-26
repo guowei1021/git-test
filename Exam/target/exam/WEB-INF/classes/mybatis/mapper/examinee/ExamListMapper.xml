@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.richfit.caq.exam.service.impl.examinee.examList">
+	<!-- 查询将要考试的列表 -->
+	<select id="getList" resultType="HashMap">
+		SELECT
+    		ec.id,
+    		ec.name,
+    		ec.exam_type,
+    		ec.starttime,
+    		ec.endtime,
+    		ec.duration,
+    		ec.sorce_line,
+    		ec.paper_id
+		FROM
+    		sp_ex.t_ex_exam_case ec
+		LEFT JOIN sp_ex.t_ex_exam_examinee ee ON ec.id = ee.exam_case_id
+		LEFT JOIN sp_ms.t_sp_ms_account ei ON ee.examinee_info_id = ei.account_id
+		WHERE
+    		ei.account_id = #{examinee_id}
+		AND ec.id NOT IN (
+    		SELECT
+				ap.exam_case_id
+			FROM
+			  sp_ex.t_ex_answer_paper ap
+			WHERE
+				ap.submit_flag = 2
+		)
+		<if test="exam_name!=null and exam_name!=''">
+			AND ec.name LIKE CONCAT('%',#{exam_name},'%')
+		</if>
+		<if test="exam_type!=null and exam_type!=''">
+			AND ec.exam_type = #{exam_type}
+		</if>
+		ORDER BY ec.starttime DESC
+	</select>
+</mapper>

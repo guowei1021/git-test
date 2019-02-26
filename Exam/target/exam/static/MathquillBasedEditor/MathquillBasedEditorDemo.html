@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MathquillBasedEditorDemo</title>
+
+    <link href="css/mathquill.css" rel="stylesheet">
+    <link href="css/matheditor.css" rel="stylesheet">
+
+    <script src="jquery-1.11.3.js" type="text/javascript"></script>
+    <script src="js/mathquill.min.js" type="text/javascript"></script>
+    <script src="js/matheditor.js" type="text/javascript"></script>
+
+<style>
+   .container{
+       width:500px;
+       margin: 50px auto;
+   }
+    h3{
+        text-align: center;
+    }
+    h5{
+        margin-top: 160px;
+    }
+
+</style>
+</head>
+
+<body>
+<div class="container" >
+    <h3>数学公式编辑器</h3>
+    <div id="MathquillBasedEditor" onkeyup="getLetex()"></div>
+
+    <h3>文字格式编辑器</h3>
+
+
+    <h5>复制以下内容，粘贴到题目中即可！</h5>
+    <p id="letex-textarea"></p>
+</div>
+
+
+<script>
+    var mathEditor = new MathEditor('MathquillBasedEditor');
+    mathEditor.styleMe({
+        width: '500',
+        height: '80'
+    });
+    mathEditor.setTemplate('floating-toolbar');
+
+    function getLetex(){
+        $("#letex-textarea").text(mathEditor.getLatex());
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="QuestionBank">
+	<!-- 根据id查询题库 -->
+	<select id="getById" resultType="HashMap">
+		SELECT
+			a.id AS "id",
+			a.name AS "name",
+			a.qb_remark AS "remark",
+			a.create_user_id AS "createUserId",
+			a.create_date AS "createDatetime",
+			a.update_user_id AS "updateUserId",
+			a.update_date AS "updateDatetime"
+		FROM
+			sp_ex.t_ex_question_bank a
+		WHERE
+			a.id = #{id}
+	</select>
+	
+	<!-- 查询列表 -->
+	<select id="getList" resultType="HashMap">
+		SELECT
+		a.id AS "id",
+		a.name AS "name",
+		a.qb_remark AS "remark",
+		a.create_user_id AS "createUserId",
+		a.create_date AS "createDatetime",
+		a.update_user_id AS "updateUserId",
+		a.update_date AS "updateDatetime",
+		( SELECT count(*) FROM sp_ex.t_ex_question b WHERE b.question_bank_id = a.id AND b.is_new = '1' ) AS questionNumber
+		FROM
+			sp_ex.t_ex_question_bank a
+		ORDER BY
+			update_date DESC
+			
+	</select>
+	
+	<!-- 新增题库 -->
+	<insert id="post">
+	INSERT INTO sp_ex.t_ex_question_bank (
+		  `id`,
+		  `name`, 
+		  `qb_remark`, 
+		  `create_user_id`, 
+		  `create_date`, 
+		  `update_user_id`, 
+		  `update_date`
+		  )
+	VALUES(
+		  #{id},
+		  #{name},
+		  #{remark}, 
+		  #{createUserId},
+		  NOW( ),
+		  #{createUserId},
+		  NOW( )
+		  ) ON DUPLICATE KEY UPDATE 
+			name = #{name},
+			qb_remark = #{remark},
+			update_user_id = #{updateUserId},
+			update_date = NOW( )
+	</insert>
+	
+	<delete id="delete" >
+		DELETE FROM
+			sp_ex.t_ex_question_bank
+		WHERE
+			id = #{id}
+	</delete>
+</mapper> 

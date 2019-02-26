@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 页面权限 -->
+<mapper namespace="com.richfit.caq.service.pagePermission">
+
+	<!-- 根据账号ID机构ID查询其所有权限（去重）√ -->
+	<select id="selectPerByAcc" resultType="java.util.HashMap">
+		SELECT DISTINCT p.* FROM (
+			SELECT
+				ar.role_id
+			FROM
+				sp_ms.t_sp_ms_org_account_role ar
+			WHERE ar.account_id = #{account_id} AND ar.org_id = #{org_id}
+		) a
+		LEFT JOIN sp_ms.t_sp_ms_org_role_permission rp
+		ON a.role_id = rp.org_role_id
+		LEFT JOIN sp_ms.t_sp_ms_org_permission p
+		ON rp.org_permission_id = p.org_permission_id
+	</select>
+
+	<!-- 根据账号ID机构ID查询其所有数据权限√ -->
+	<select id="selectDataPerByAcc" resultType="java.util.HashMap">
+		SELECT * FROM (
+			SELECT
+				ar.id,ar.role_id
+			FROM
+				sp_ms.t_sp_ms_org_account_role ar
+			WHERE ar.account_id = #{account_id} AND ar.org_id = #{org_id}
+		) a
+		JOIN sp_ms.t_sp_ms_org_account_zone az
+		ON a.id = az.org_account_role_id
+	</select>
+
+</mapper>
+

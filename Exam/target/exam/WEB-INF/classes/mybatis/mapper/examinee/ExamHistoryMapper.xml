@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.richfit.caq.exam.service.impl.examinee.examHistory">
+	<!-- 查询考试历史 -->
+	<select id="getList" resultType="HashMap">
+		SELECT
+			ec.id,
+			ec.`name`,
+			ec.exam_type,
+			ec.starttime,
+			ap.total_score,
+			ap.paper_case_id,
+			ap.id AS answer_paper_id
+		FROM
+			sp_ex.t_ex_answer_paper ap
+		LEFT JOIN sp_ex.t_ex_exam_case ec ON ec.id = ap.exam_case_id
+		WHERE
+			ap.examinee_info_id = #{examinee_id}
+		AND ap.submit_flag = 2
+    	<if test="exam_name!=null and exam_name!=''">
+    		AND ec.`name` LIKE CONCAT('%',#{exam_name},'%')
+    	</if>
+    	<if test="exam_type!=null and exam_type!=''">
+    		AND ec.exam_type = #{exam_type}
+    	</if>
+    	ORDER BY ap.update_date DESC
+	</select>
+</mapper>

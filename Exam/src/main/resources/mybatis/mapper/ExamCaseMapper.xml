@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 考试实例表 -->
+<mapper namespace="examCase">
+
+	<!-- 查单条 -->
+	<select id="select" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_exam_case
+		WHERE
+			id = #{id}
+	</select>
+	
+	<!-- 查考试实例全部信息，包含策略和考试模板名称 -->
+	<select id="get" resultType="java.util.HashMap">
+		SELECT
+			a.name AS exam_case_name,
+			b.paper_id AS paper_id,
+			b.beforehand_number AS number,
+			c.name AS paper_name
+		FROM
+			`t_ex_exam_case` a
+			LEFT JOIN `t_ex_exam_policy` b on a.id = b.exam_case_id
+			LEFT JOIN `t_ex_paper` c on c.id = a.paper_id
+		WHERE
+			a.id = #{id}
+	</select>
+
+	<!-- 查所有 -->
+	<select id="selectAll" resultType="java.util.HashMap">
+		SELECT *
+		FROM sp_ex.t_ex_exam_case
+		WHERE exam_id = #{exam_id}
+		ORDER BY create_date DESC
+	</select>
+	
+	<!-- 增 -->
+	<insert id="post">
+		INSERT INTO sp_ex.t_ex_exam_case (
+			id,
+			exam_id,
+			name,
+			exam_type,
+			is_connect,
+			topic_is_disorder,
+			option_is_disorder,
+			sorce_line,
+			locked_times,
+			is_charge,
+			fee,
+			account,
+			starttime,
+			endtime,
+			duration,
+			examiner_id,
+			is_beforehand,
+			create_user_id,
+			create_date
+		)
+		VALUES (
+			#{id},
+			#{exam_id},
+			#{name},
+			#{exam_type},
+			#{is_connect},
+			#{topic_is_disorder},
+			#{option_is_disorder},
+			#{sorce_line},
+			#{locked_times},
+			#{is_charge},
+			#{fee},
+			#{account},
+			#{starttime},
+			#{endtime},
+			#{duration},
+			#{examiner_id},
+			#{is_beforehand},
+			#{create_user_id},
+			NOW()
+		)
+	</insert>
+
+	<!-- 改 -->
+	<update id="put">
+		UPDATE sp_ex.t_ex_exam_case 
+		SET 
+			name = #{name},
+			exam_type = #{exam_type},
+			is_connect = #{is_connect},
+			topic_is_disorder = #{topic_is_disorder},
+			option_is_disorder = #{option_is_disorder},
+			sorce_line = #{sorce_line},
+			locked_times = #{locked_times},
+			is_charge = #{is_charge},
+			fee = #{fee},
+			account = #{account},
+			starttime = #{starttime},
+			endtime = #{endtime},
+			duration = #{duration},
+			examiner_id = #{examiner_id},
+			is_beforehand = #{is_beforehand}
+		WHERE
+			id = #{id}
+	</update>
+
+	<!-- 删 -->
+	<delete id="delete">
+		DELETE FROM
+			sp_ex.t_ex_exam_case
+		WHERE
+			id = #{id}
+	</delete>
+
+</mapper>
+

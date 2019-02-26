@@ -1,0 +1,68 @@
+/* 娓呴櫎榛樿鏍峰紡 */
+/* li{list-style:none;} */
+body{background:#f2f2f2;}
+div,ul,li,p,input,span,i,h1,h2,h3,h4,h5,h6,select,option{margin:0;padding:0;font-family:"Microsoft YaHei";color:#333;}
+input,select,textarea{border:1px solid #ccc !important;}
+/* 琛ㄥ崟椤堕儴鏍囬 */
+/* 寮�濮嬫椂闂村拰缁撴潫鏃堕棿 */
+.time{border-bottom:1px solid #ccc;}
+.start-time{line-height:30px}
+.start-time-title{line-height:25px;padding:0 10px;font-size:14px;font-weight:bold;}
+.start-time span{font-size:12px;}
+.start-time input{font-size:12px;margin-top:5px;height:20px;}
+/*璁＄畻鏃堕棿 */
+.time-num{font-size:12px;line-height:30px;padding:0 10px;}
+.time-num input{width:30px;height:18px;font-size:12px;font-weight: normal;}
+/* 涓嬫媺鍒楄〃 */
+.select,.select option{line-height:20px;font-size:12px !important;font-weight: normal;}
+.am-selected-status{font-size:12px !important;}
+.am-selected-btn{padding:2px 15px;}
+.am-selected-text{font-size:12px !important;font-weight: normal;}
+/* 鏂囨湰杈撳叆妗� */
+.textarea-con{border-bottom:1px solid #ccc;padding-bottom: 10px;background:#fff;padding:15px 0;}
+.textarea-title{line-height:25px;font-size:14px;font-weight: bold;}
+.textarea{min-height:50px;border:1px solid #ccc;width:100%;font-size:12px;border-radius:5px;}
+/* 澧炲姞鍒犻櫎鍥炬爣 */
+.content-add{position:absolute;bottom:10px;right:15px;width:20px;height:20px;background:#2d7bbd;
+font-size:18px;border-radius:50%;text-align:center;line-height:20px;color:#fff;font-weight:bold;}
+.content-remove{width:20px;height:20px;background:#2d7bbd;
+font-size:22px;border-radius:50%;text-align:center;line-height:20px;color:#fff;font-weight:bold;}
+/* 鎸夐挳 */
+.button{margin-top:15px;padding:5px 0;background: #2d7bbd;
+color:#fff;border-radius: 3px;border:none;outline: none;font-size:12px;margin-bottom:20px;}
+.keep{background:#2d7bbd;}
+.submit{background:#5ab66b;}
+.delete{background:#aaaaaa;}
+.agree{background:#3192e1;}
+.noagree{background:#cb3a3d;}
+/* 鑾峰彇鐒︾偣鏃剁殑鏍峰紡 */
+input:focus{outline:none;border:1px solid #3ab5f3;}
+textarea:focus{outline:none;border:1px solid #3ab5f3;}
+select:focus{outline:none;border:1px solid #3ab5f3;}
+/* 瀹℃壒鏃ュ織 */
+.approval{margin-bottom:15px;}
+.approval>p{height:30px;font-size:14px;font-weight:bold;line-height:30px;padding:0 10px;}
+.list{background:#fff;}
+.list li p{font-size:12px;line-height:25px;font-weight:500;}
+.list li{border-bottom:1px solid #ccc;padding:0 10px;}
+.list .list-time{padding-left:20px;}
+.list .list-status{float:right;color:#fff;line-height:18px;
+padding:3px;margin-top:6px;border-radius:2px;width:50px;text-align:center;}
+.zhezhao{display:none;}
+
+input,select{background:#fff;border:}
+.duration{background: rgb(255, 255, 255);border-left-width: 1px;border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;}
+
+.am-modal-bd ol{list-style-type:demical;}  
+.am-modal-bd ol li{list-style-position:outside;padding:3px 0;}  
+.am-modal-hd{margin-top:10px;}
+.am-dimmer{z-index:1 !important;}
+
+
+
+
+
+
+
+
+

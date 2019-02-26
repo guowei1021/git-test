@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.richfit.caq.exam.service.impl.examinee.applyExam">
+	<!-- 未报名的考试列表 -->
+	<select id="getList" resultType="HashMap">
+		SELECT
+    		id,
+    		`name`,
+    		exam_type,
+    		is_connect,
+    		sorce_line,
+    		is_charge,
+    		fee,
+    		starttime,
+    		endtime,
+    		duration
+		FROM
+    		sp_ex.t_ex_exam_case
+		WHERE
+    		id NOT IN (
+        		SELECT
+            		ec.id
+        		FROM
+            		sp_ex.t_ex_exam_case ec
+        		LEFT JOIN sp_ex.t_ex_exam_examinee ee ON ec.id = ee.exam_case_id
+				LEFT JOIN sp_ms.t_sp_ms_account ei ON ee.examinee_info_id = ei.account_id
+        		WHERE
+					ei.account_id = #{examinee_id}
+    		)
+		<if test="exam_name!=null and exam_name!=''">
+			AND name LIKE CONCAT('%',#{exam_name},'%')
+		</if>
+		<if test="exam_type!=null and exam_type!=''">
+			AND exam_type = #{exam_type}
+		</if>
+		ORDER BY starttime DESC
+	</select>
+	<!-- 根据ID查询单条数据 -->
+	<select id="getById" resultType="HashMap">
+		SELECT * FROM sp_ex.t_ex_exam_case WHERE id = #{id}
+	</select>
+	<!-- 报名插入数据 -->
+	<insert id="saveApply">
+		INSERT INTO sp_ex.t_ex_exam_examinee
+		VALUES
+			(#{id}, #{examinee_info_id}, #{exam_case_id})
+	</insert>
+	<!-- 保存付费信息 -->
+	<insert id="savePayInnfo">
+		INSERT INTO sp_ex.t_ex_payment_info (
+			id,
+			t_ex_examinee_info_id,
+			t_ex_exam_case_id,
+			payment_method,
+			paymen_status
+		)
+		VALUES
+			(
+				#{id}, 
+				#{examinee_info_id}, 
+				#{exam_case_id}, 
+				#{payment_method}, 
+				'1'
+			)
+	</insert>
+
+	<!-- 根据ID查询单条数据 -->
+	<select id="getSubFlag" resultType="HashMap">
+		SELECT
+			eap.submit_flag
+		FROM
+			sp_ex.t_ex_answer_paper eap
+			LEFT JOIN sp_ex.t_ex_exam_case eec ON eec.id = eap.exam_case_id
+		WHERE
+			eec.id = #{id}
+			AND eap.examinee_info_id = #{examinee_info_id}
+	</select>
+
+</mapper>

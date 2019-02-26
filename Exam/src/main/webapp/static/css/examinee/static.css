@@ -1,0 +1,215 @@
+div,
+span,
+select,
+input,
+tr,
+td,
+th {
+	font-size: 12px
+}
+.forbid{
+	color: #ccc;
+}
+.details {
+	color: #00ec00;
+}
+
+.controll {
+	color: #333;
+}
+
+.header {
+	font-size: 18px;
+	text-align: center;
+	margin-top: 50px;
+	font-weight: bold;
+}
+
+.search {
+	border: 1px solid #ccc;
+}
+
+.input {
+	border: 1px solid #ccc;
+	width: 186px;
+	height: 32px;
+}
+
+.jibenxinxi {
+	display: block;
+	width: 90px;
+}
+
+.div-labe-class {
+	float: left;
+	width: 120px;
+}
+
+.img-btn{
+	width: 20px;
+	height: 20px;
+}
+.img-btn_1{
+	width: 24px;
+	height: 24px;
+}
+
+.modal-label{
+	width: 72px;
+	text-align: right;
+}
+
+.ex-select{
+	width: 200px;
+	height: 32px;
+}
+
+table tbody tr td{
+    vertical-align: middle !important;
+}
+
+.question-li{
+    list-style: decimal;
+    padding-left: 10px;
+}
+
+ol li p{
+    padding-left: 20px;
+}
+
+ol li font{
+    color: #FF0000;
+}
+
+.round{
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    vertical-align: top;
+    border:1px solid #ccc;"
+}
+.biao-ti{
+    margin-top: 10px;border:1px solid #ccc;"
+}
+.shu-zi{
+    display: block;height: 20px;line-height: 20px;text-align: center
+}
+.correct-color{
+    color: #00ec00;
+}
+.error-color{
+    color: #FF0000;
+}
+.chec-radio-d{
+    disabled:disabled;
+}
+.sun-div{
+	margin-bottom: 10px;padding-left: 130px;
+}
+
+.option-label{
+	font-weight:normal;
+}
+
+
+/*登录模态框*/
+
+body, th, td, button, input, select, textarea{font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,Verdana,sans-serif,"WenQuanYi Micro Hei","\5B8B\4F53";}
+input{ padding:0;}
+h1,h2,h3,h4,h5,p{ margin:0px; padding:0px; font-weight:normal; color:#111;}
+h1{ font-size:18px; height:40px; line-height:40px;}
+h2{ font-size:16px; font-weight:600; height:28px; line-height:28px;}
+h3{ font-size:20px; font-weight:500; height:35px; line-height:35px;text-align: left;}
+
+dl,ul,ol,dt,dd{ margin:0px; padding:0px; list-style:none;}
+em,i{ font-style:normal;}
+img{ border:none;}
+.clear{ clear:both; height:0; overflow:hidden;}
+.bold{ font-weight:bold;}
+.fl{ float:left;}
+.fr{ float:right;}
+a{text-decoration:none; color:#111;}
+
+.Box{ overflow:hidden; background-color:#fff; border:1px #e8e8e8 solid;}
+/*-----------------登录/注册-------------------------*/
+.login{ background:none;}
+.loginbox{ width:100%; height:480px; background:#0061b0 url(../../images/login.jpg) no-repeat center top;}
+.loginbox_c{ width:1170px; margin:0 auto; position:relative;}
+.in_log{ width:350px; padding:0px 30px; height:320px; /*overflow:hidden;*/ background-color:#fff; position:absolute; margin:0px 20px;
+    /* For IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#01315f')";
+    /* For IE 5.5 - 7 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#01315f');}
+
+.tit_log{ width:100%; height:20px; line-height:35px; position:relative;}
+.tit_log a{ position:absolute; right:0; top:2px; color:#0061b0;}
+
+.in_log ul li{ width:100%; height:80px; line-height:40px; padding:9px 0; color:#666; position:relative;}
+.in_log ul li a{ color:#999;}
+.in_log ul li a:hover{ text-decoration:underline;}
+.in_log ul li.ts{ height:26px; padding:4px 0 2px 0;}
+.in_log ul li.ts i{ width:298px; padding-left:10px; display:block; height:24px; line-height:24px; border:1px #f8aab8 solid; background-color:#ffdee4; font-size:12px;}
+.in_log ul li.ts i.i1{ color:#666;}
+.in_log ul li.ts i.i2{ color:#f00;}
+.in_log ul li.ff{ height:26px; line-height:26px; padding:2px 0 0 0;}
+.in_log ul li.ff span{ color:#333;}
+
+.in_user,.in_mm,.in_login{ width:290px; height:38px; line-height:38px\9; border:1px #dadada solid; color:#999; position: relative;background:url(../../images/user.gif) no-repeat 0 center !important; display:block; padding-left:50px; font-size:14px;}
+.in_mm{background:#fff url(../../images/mm.gif) no-repeat 0 center;}
+.in_login{background:#fff url(../../images/YZM.gif) no-repeat 0 center;}
+.in_user:hover,.in_mm:hover,.in_login:hover{ border-color:#6d98d0;}
+
+.che{ margin-right:8px;vertical-align:-2px;_vertical-align:-1px;}
+.che2{ margin-right:8px;vertical-align:-2px;_vertical-align:-1px; margin-left:20px;}
+.in_yz{width:75px; height:38px; line-height:38px\9; border:1px #dadada solid; color:#999; background:#fff; padding:0 10px; font-size:14px;}
+.yzm{ width:90px; height:40px; margin-left:5px;}
+.login_ok{text-align: center; width:100%; height:36px; line-height:34px; background:#9dc815; border:1px #9dc815 solid; color:#fff; font-size:16px;-moz-box-shadow: inset 0px 0px 1px #c2e15b;-webkit-box-shadow:inset 0px 0px 1px #c2e15b; box-shadow:inset 0px 0px 1px #c2e15b; margin-top:5px;}
+.login_ok:hover{ background:#8cb702}
+
+.dxyzm{ width:120px; height:39px;  margin-left:5px;line-height:34px; background:#5bb6e1; border:1px #5bb6e1 solid; color:#fff; font-size:16px;-moz-box-shadow: inset 0px 0px 1px #5bb6e1;-webkit-box-shadow:inset 0px 0px 1px #c2e15b; box-shadow:inset 0px 0px 1px #c2e15b;}
+.dxyzm:hover{ background:#1c97e1; cursor:pointer;}
+.dxyzms{background:#c7c7c7; border:1px #c7c7c7 solid;}
+.dxyzms:hover{ background:#c7c7c7; cursor:default;}
+
+.in_login.rr{border-color:#f00;}
+
+.btn_ok{ height:35px; line-height:35px; background:#0061b0; border:0; color:#fff; font-size:14px; font-family:"微软雅黑"; padding:0 15px;}
+.btn_ok:hover{ background:#026fc7}
+
+.w50{ width:50px;}
+.w60{ width:60px;}
+.w70{ width:70px;}
+.w80{ width:80px;}
+.w90{ width:90px;}
+.w100{ width:100px;}
+.w105{ width:105px;}
+.w110{ width:110px;}
+.w120{ width:120px;}
+.w130{ width:130px;}
+.w140{ width:140px;}
+.w150{ width:150px;}
+.w160{ width:160px;}
+.w165{ width:165px;}
+.w170{ width:170px;}
+.w200{ width:200px;}
+.w215{ width:215px;}
+.w220{ width:220px;}
+.w230{ width:230px;}
+.w235{ width:235px;}
+.w260{ width:260px;}
+.w290{ width:290px;}
+.w300{ width:300px;}
+.w310{ width:310px;}
+.w350{ width:350px;}
+.w355{ width:355px;}
+.w400{ width:400px;}
+.w500{ width:500px;}
+.w580{ width:580px;}
+.w600{ width:600px;}
+.w650{ width:650px;}
+
+.red{ color:#f00;}
+.green{ color:#97c507;}
+.blue{ color:#0061b0;}
+.grey{ color:#999;}

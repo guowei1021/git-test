@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Paper">
+
+	<!-- 根据id查询试卷模板 -->
+	<select id="getById" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_paper a
+		WHERE
+			a.id = #{id}
+	</select>
+	
+	<!-- 查询全部试卷模板 -->
+	<select id="getList" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_paper a
+		ORDER BY
+			update_date
+	</select>
+	
+	<!-- 根据静态考试查询全部试卷模板 -->
+	<select id="getListByExamId" resultType="HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_paper a,
+			sp_ex.t_ex_exam_paper b
+		WHERE
+			a.id = b.paper_id
+			AND b.exam_id = #{exam_id} 
+		ORDER BY
+			a.update_date DESC
+	</select>
+	
+	<!-- 根据静态考试查询其他试卷模板 -->
+	<select id="getOtherPaperListByExamId" resultType="HashMap">
+		
+	</select>
+	
+	<!-- 新增试卷 -->
+	<insert id="post">
+	INSERT INTO sp_ex.t_ex_paper (
+		  `id`,
+		  `name`, 
+		  `create_user_id`, 
+		  `create_date`, 
+		  `update_user_id`, 
+		  `update_date`
+		  )
+	VALUES(
+		  #{id},
+		  #{name},
+		  #{createUserId},
+		  NOW( ),
+		  #{createUserId},
+		  NOW( )
+		  )
+
+	</insert>
+	
+	<insert id="associateToExam">
+		INSERT INTO `sp_ex`.`t_ex_exam_paper` (
+			 `id`, 
+			 `paper_id`, 
+			 `exam_id` 
+			 )
+		VALUES
+			( 
+			 (SELECT REPLACE(UUID(),'-','')),
+			 #{id}, 
+			 #{exam_id}
+			 );
+	</insert>
+	
+	<!-- 修改试卷模板 -->
+	<update id="put">
+		UPDATE sp_ex.t_ex_paper a
+		SET
+		  `name` = #{name},
+		  `update_user_id` = #{update_user_id}, 
+		  `update_date` = NOW()
+		WHERE
+			a.id = #{id}
+	</update>
+	
+	<!-- 检查试卷是否可以删除，查看已生成试卷数量 -->
+	<select id="checkPaperCase" resultType="HashMap">
+		SELECT
+			count(*) AS number
+		FROM
+			sp_ex.t_ex_paper_case a
+		WHERE
+			a.paper_id = #{paper_id}
+	</select>
+	
+	<!-- 检查试卷是否可以删除，查看已生成试卷数量 -->
+	<select id="checkExamPolicy" resultType="HashMap">
+		SELECT
+			count(*) AS number
+		FROM
+			sp_ex.t_ex_exam_policy a
+		WHERE
+			a.paper_id = #{paper_id}
+	</select>
+	
+	<!-- 删除试卷模板 -->
+	<delete id="delete" >
+	DELETE FROM
+			sp_ex.t_ex_paper
+		WHERE
+			id = #{id}
+	</delete>
+</mapper> 

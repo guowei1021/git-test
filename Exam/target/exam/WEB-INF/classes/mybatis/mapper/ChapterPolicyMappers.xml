@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ChapterPolicy">
+	<!-- 根据id查询章节策略 -->
+	<select id="getById" resultType="HashMap">
+		SELECT
+			a.id,
+			a.chapter_id,
+			a.knowledge_id,
+			a.question_bank_ids,
+			a.level,
+			a.score,
+			a.number,
+			b.k_name,
+			GROUP_CONCAT(c.name) AS question_bank_content
+			
+		FROM
+			sp_ex.t_ex_chapter_policy a
+			LEFT JOIN sp_ex.t_ex_knowledge b on b.id = a.knowledge_id
+			LEFT JOIN sp_ex.t_ex_question_bank c on FIND_IN_SET(c.id,a.question_bank_ids)
+		WHERE
+			a.id = #{id}
+	</select>
+	
+	<!-- 查询所有章节策略列表 -->
+	<select id="getList" resultType="HashMap">
+		SELECT
+			a.id,
+			a.chapter_id,
+			a.knowledge_id,
+			a.question_bank_ids,
+			a.level,
+			a.score,
+			a.number,
+			b.k_name,
+			GROUP_CONCAT(c.name) AS question_bank_content
+			
+		FROM
+			sp_ex.t_ex_chapter_policy a
+			LEFT JOIN sp_ex.t_ex_knowledge b on b.id = a.knowledge_id
+			LEFT JOIN sp_ex.t_ex_question_bank c on FIND_IN_SET(c.id,a.question_bank_ids)
+		ORDER BY
+			a.update_date DESC
+	</select>
+	
+	<!-- 通过章节id查询章节策略列表 -->
+	<select id="getListByChapterId" resultType="HashMap">
+	SELECT
+			a.id,
+			a.chapter_id,
+			a.knowledge_id,
+			a.question_bank_ids,
+			a.level,
+			a.score,
+			a.number,
+			b.k_name,
+			c.name
+			<!-- GROUP_CONCAT(c.name) AS question_bank_content -->
+			
+			
+		FROM
+			sp_ex.t_ex_chapter_policy a
+			LEFT JOIN sp_ex.t_ex_knowledge b on b.id = a.knowledge_id
+			LEFT JOIN sp_ex.t_ex_question_bank c on c.id =a.question_bank_ids
+			<!-- LEFT JOIN sp_ex.t_ex_question_bank c on FIND_IN_SET(c.id,a.question_bank_ids) -->
+		WHERE
+			a.chapter_id = #{chapter_id}
+		ORDER BY
+			a.update_date DESC
+	</select>
+	
+	<!-- 查询所有题库 -->
+	<select id="getQuestionBankList" resultType="HashMap">
+		SELECT
+		a.id AS "id",
+		a.name AS "name",
+		a.qb_remark AS "remark",
+		a.create_user_id AS "createUserId",
+		a.create_date AS "createDatetime",
+		a.update_user_id AS "updateUserId",
+		a.update_date AS "updateDatetime",
+		( SELECT count(*) FROM sp_ex.t_ex_question b WHERE b.question_bank_id = a.id ) AS questionNumber
+		FROM
+			sp_ex.t_ex_question_bank a
+		ORDER BY
+			update_date DESC
+	</select>
+	
+	<!-- 查询可关联的知识点 -->
+	<select id="getKnowledgeList" resultType="HashMap">
+		SELECT
+			* 
+		FROM
+			sp_ex.t_ex_knowledge 
+		
+	</select>
+	
+	<!-- 新增章节策略 -->
+	<insert id="post">
+	INSERT INTO `sp_ex`.`t_ex_chapter_policy` (
+		`id`,
+		`chapter_id`,
+		`knowledge_id`,
+		`question_bank_ids`,
+		`level`,
+		`score`,
+		`number`,
+		`create_user_id`,
+		`create_date`,
+		`update_user_id`,
+		`update_date`
+		)
+		VALUES
+			(
+			  #{id},
+			  #{chapter_id},
+			  #{knowledge_id},
+			  #{question_bank_ids},
+			  #{level}, 
+			  #{score},
+			  #{number},
+			  #{create_user_id},
+			  NOW( ),
+			  #{create_user_id},
+			  NOW( )
+			  )
+	</insert>
+	
+	<!-- 修改章节策略 -->
+	<update id="put">
+		UPDATE sp_ex.t_ex_chapter_policy a
+		SET
+		  `knowledge_id` = #{knowledge_id},
+		  `question_bank_ids` = #{question_bank_ids}, 
+		  `level` = #{level}, 
+		  `score` = #{score}, 
+		  `number` = #{number}, 
+		  `update_user_id` = #{update_user_id}, 
+		  `update_date` = NOW()
+		WHERE
+			a.id = #{id}
+	</update>
+	
+	<!-- 删除章节策略 -->
+	<delete id="delete" >
+		DELETE FROM
+			sp_ex.t_ex_chapter_policy
+		WHERE
+			id = #{id}
+	</delete>
+	
+	<!-- 汇总章节总分 -->
+	<update id="sum">
+		UPDATE sp_ex.t_ex_chapter a 
+			SET `chapter_grade` = ( SELECT SUM( score * number ) FROM `t_ex_chapter_policy` WHERE chapter_id = #{id} ) 
+		WHERE
+			a.id = #{id}
+	</update>
+	
+</mapper> 

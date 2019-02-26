@@ -1,0 +1,73 @@
+﻿@charset "UTF-8";
+/* CSS Document */
+.my_loading {
+    width: 4px;
+    height: 6px;
+    background: white;
+    float: left;
+    margin: 0 3px;
+    animation: my_loading linear 1s infinite;
+    -webkit-animation: my_loading linear 1s infinite;
+}
+.my_loading:nth-child(1){
+    animation-delay:0s;
+}
+.my_loading:nth-child(2){
+    animation-delay:0.15s;
+}
+.my_loading:nth-child(3){
+    animation-delay:0.3s;
+}
+.my_loading:nth-child(4){
+    animation-delay:0.45s;
+}
+.my_loading:nth-child(5){
+    animation-delay:0.6s;
+}
+.my_loading:nth-child(6){
+    animation-delay:0.75s;
+}
+.my_loading:nth-child(7){
+    animation-delay:0.9s;
+}
+@keyframes my_loading {
+    0%,60%,100% {transform: scale(1);}
+    30% {transform: scaleY(3);}
+}
+@-webkit-keyframes my_loading {
+    0%,60%,100% {transform: scale(1);}
+    30% {transform: scaleY(3);}
+}
+.loadings{
+	width: 75px;
+	margin: 0  auto;
+	margin-top: 15px;
+}
+.loading_but{ 
+	display:none;
+	width:100%; 
+	height:36px; 
+	line-height:34px; 
+	background:#9dc815; 
+	border:1px #9dc815 solid; 
+	color:#fff; 
+	font-size:16px;
+	-moz-box-shadow: inset 0px 0px 1px #c2e15b;
+	-webkit-box-shadow:inset 0px 0px 1px #c2e15b; 
+	box-shadow:inset 0px 0px 1px #c2e15b; 
+	margin-top:3px;
+}
+.sysmail_loading{
+	display:none;
+	width:120px; 
+	height:37px;  
+	margin-left:5px;
+	line-height:34px; 
+	background:#5bb6e1; 
+	border:1px #5bb6e1 solid; 
+	color:#fff; font-size:16px;
+	-moz-box-shadow: inset 0px 0px 1px #5bb6e1;
+	-webkit-box-shadow:inset 0px 0px 1px #c2e15b; 
+	box-shadow:inset 0px 0px 1px #c2e15b;
+	border-radius:3px;
+}

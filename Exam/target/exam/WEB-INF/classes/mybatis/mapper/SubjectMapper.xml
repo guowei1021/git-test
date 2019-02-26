@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 科目表 -->
+<mapper namespace="subject">
+
+	<!-- 查单条 -->
+	<select id="select" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_subject
+		WHERE
+			id = #{id}
+	</select>
+
+	<!-- 查列表 -->
+	<select id="selectAll" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+			sp_ex.t_ex_subject
+		ORDER BY create_date ASC
+	</select>
+	
+	<!-- 增 -->
+	<insert id="post">
+		INSERT INTO sp_ex.t_ex_subject (
+			id,
+			name,
+			create_user_id,
+			create_date
+		)
+		VALUES (
+			#{id},
+			#{name},
+			#{create_user_id},
+			NOW()
+		)
+	</insert>
+
+	<!-- 改 -->
+	<update id="put">
+		UPDATE sp_ex.t_ex_subject 
+		SET 
+			name = #{name}
+		WHERE
+			id = #{id}
+	</update>
+
+	<!-- 删 -->
+	<delete id="delete">
+		DELETE FROM
+			sp_ex.t_ex_subject 
+		WHERE
+			id = #{id}
+	</delete>
+
+</mapper>
+
